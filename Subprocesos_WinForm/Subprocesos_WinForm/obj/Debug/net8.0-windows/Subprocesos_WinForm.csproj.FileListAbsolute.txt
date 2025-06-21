@@ -1,0 +1,16 @@
+D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.Form1.resources
+D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.csproj.GenerateResource.cache
+D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.GeneratedMSBuildEditorConfig.editorconfig
+D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.AssemblyInfoInputs.cache
+D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.AssemblyInfo.cs
+D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.csproj.CoreCompileInputs.cache
+D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\bin\Debug\net8.0-windows\Subprocesos_WinForm.exe
+D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\bin\Debug\net8.0-windows\Subprocesos_WinForm.deps.json
+D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\bin\Debug\net8.0-windows\Subprocesos_WinForm.runtimeconfig.json
+D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\bin\Debug\net8.0-windows\Subprocesos_WinForm.dll
+D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\bin\Debug\net8.0-windows\Subprocesos_WinForm.pdb
+D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.dll
+D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\refint\Subprocesos_WinForm.dll
+D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.pdb
+D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.genruntimeconfig.cache
+D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\ref\Subprocesos_WinForm.dll
