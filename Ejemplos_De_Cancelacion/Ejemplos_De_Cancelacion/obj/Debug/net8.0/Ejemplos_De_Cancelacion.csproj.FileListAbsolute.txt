@@ -1,0 +1,14 @@
+C:\Users\insga\source\repos\Ejemplos_De_Cancelacion\Ejemplos_De_Cancelacion\bin\Debug\net8.0\Ejemplos_De_Cancelacion.exe
+C:\Users\insga\source\repos\Ejemplos_De_Cancelacion\Ejemplos_De_Cancelacion\bin\Debug\net8.0\Ejemplos_De_Cancelacion.deps.json
+C:\Users\insga\source\repos\Ejemplos_De_Cancelacion\Ejemplos_De_Cancelacion\bin\Debug\net8.0\Ejemplos_De_Cancelacion.runtimeconfig.json
+C:\Users\insga\source\repos\Ejemplos_De_Cancelacion\Ejemplos_De_Cancelacion\bin\Debug\net8.0\Ejemplos_De_Cancelacion.dll
+C:\Users\insga\source\repos\Ejemplos_De_Cancelacion\Ejemplos_De_Cancelacion\bin\Debug\net8.0\Ejemplos_De_Cancelacion.pdb
+C:\Users\insga\source\repos\Ejemplos_De_Cancelacion\Ejemplos_De_Cancelacion\obj\Debug\net8.0\Ejemplos_De_Cancelacion.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\insga\source\repos\Ejemplos_De_Cancelacion\Ejemplos_De_Cancelacion\obj\Debug\net8.0\Ejemplos_De_Cancelacion.AssemblyInfoInputs.cache
+C:\Users\insga\source\repos\Ejemplos_De_Cancelacion\Ejemplos_De_Cancelacion\obj\Debug\net8.0\Ejemplos_De_Cancelacion.AssemblyInfo.cs
+C:\Users\insga\source\repos\Ejemplos_De_Cancelacion\Ejemplos_De_Cancelacion\obj\Debug\net8.0\Ejemplos_De_Cancelacion.csproj.CoreCompileInputs.cache
+C:\Users\insga\source\repos\Ejemplos_De_Cancelacion\Ejemplos_De_Cancelacion\obj\Debug\net8.0\Ejemplos_De_Cancelacion.dll
+C:\Users\insga\source\repos\Ejemplos_De_Cancelacion\Ejemplos_De_Cancelacion\obj\Debug\net8.0\refint\Ejemplos_De_Cancelacion.dll
+C:\Users\insga\source\repos\Ejemplos_De_Cancelacion\Ejemplos_De_Cancelacion\obj\Debug\net8.0\Ejemplos_De_Cancelacion.pdb
+C:\Users\insga\source\repos\Ejemplos_De_Cancelacion\Ejemplos_De_Cancelacion\obj\Debug\net8.0\Ejemplos_De_Cancelacion.genruntimeconfig.cache
+C:\Users\insga\source\repos\Ejemplos_De_Cancelacion\Ejemplos_De_Cancelacion\obj\Debug\net8.0\ref\Ejemplos_De_Cancelacion.dll

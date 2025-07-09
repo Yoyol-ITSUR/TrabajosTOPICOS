@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Ejemplos_De_Cancelacion/1.0.0": {
+        "runtime": {
+          "Ejemplos_De_Cancelacion.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Ejemplos_De_Cancelacion/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
