@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Subprocesos_WinForm")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d8d0ec3a47675dad4eb0f9179b64e624094975c2")]
 [assembly: System.Reflection.AssemblyProductAttribute("Subprocesos_WinForm")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Subprocesos_WinForm")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

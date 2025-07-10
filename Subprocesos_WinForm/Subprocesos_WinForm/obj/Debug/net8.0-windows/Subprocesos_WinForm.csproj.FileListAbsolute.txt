@@ -14,3 +14,20 @@ D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_
 D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.pdb
 D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.genruntimeconfig.cache
 D:\Usuario\Alumno\Documentos\Visual Studio 2022\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\ref\Subprocesos_WinForm.dll
+C:\Users\insga\Desktop\repos_git\TrabajosTOPICOS\Subprocesos_WinForm\Subprocesos_WinForm\bin\Debug\net8.0-windows\Subprocesos_WinForm.exe
+C:\Users\insga\Desktop\repos_git\TrabajosTOPICOS\Subprocesos_WinForm\Subprocesos_WinForm\bin\Debug\net8.0-windows\Subprocesos_WinForm.deps.json
+C:\Users\insga\Desktop\repos_git\TrabajosTOPICOS\Subprocesos_WinForm\Subprocesos_WinForm\bin\Debug\net8.0-windows\Subprocesos_WinForm.runtimeconfig.json
+C:\Users\insga\Desktop\repos_git\TrabajosTOPICOS\Subprocesos_WinForm\Subprocesos_WinForm\bin\Debug\net8.0-windows\Subprocesos_WinForm.dll
+C:\Users\insga\Desktop\repos_git\TrabajosTOPICOS\Subprocesos_WinForm\Subprocesos_WinForm\bin\Debug\net8.0-windows\Subprocesos_WinForm.pdb
+C:\Users\insga\Desktop\repos_git\TrabajosTOPICOS\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.Form1.resources
+C:\Users\insga\Desktop\repos_git\TrabajosTOPICOS\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.csproj.GenerateResource.cache
+C:\Users\insga\Desktop\repos_git\TrabajosTOPICOS\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\insga\Desktop\repos_git\TrabajosTOPICOS\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.AssemblyInfoInputs.cache
+C:\Users\insga\Desktop\repos_git\TrabajosTOPICOS\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.AssemblyInfo.cs
+C:\Users\insga\Desktop\repos_git\TrabajosTOPICOS\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.csproj.CoreCompileInputs.cache
+C:\Users\insga\Desktop\repos_git\TrabajosTOPICOS\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.sourcelink.json
+C:\Users\insga\Desktop\repos_git\TrabajosTOPICOS\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.dll
+C:\Users\insga\Desktop\repos_git\TrabajosTOPICOS\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\refint\Subprocesos_WinForm.dll
+C:\Users\insga\Desktop\repos_git\TrabajosTOPICOS\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.pdb
+C:\Users\insga\Desktop\repos_git\TrabajosTOPICOS\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\Subprocesos_WinForm.genruntimeconfig.cache
+C:\Users\insga\Desktop\repos_git\TrabajosTOPICOS\Subprocesos_WinForm\Subprocesos_WinForm\obj\Debug\net8.0-windows\ref\Subprocesos_WinForm.dll
