@@ -1,7 +1,13 @@
-﻿using BCrypt.Net; // Necesario para el hashing de contraseñas
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiSCAR.Models;
+using BCrypt.Net; // Necesario para el hashing de contraseñas
+
+/*
+ * Es el Api Controller para el usuario.
+ * Aquí se maneja los cruds para las peticiones http
+ * Y OBVIAMENTE tenemos que respetar y aplicar lo asincrono
+*/
 
 namespace WebApiSCAR.Controllers
 {
@@ -31,8 +37,7 @@ namespace WebApiSCAR.Controllers
                 {
                     Id = u.Id,
                     Username = u.Username,
-                    // La propiedad Password no se incluye intencionalmente aquí por seguridad.
-                    // Si se necesitara una representación, sería un campo diferente (ej. PasswordHash).
+                    // La propiedad Password no se incluye intencionalmente aquí por seguridad (creo).
                 })
                 .ToListAsync();
         }
@@ -74,7 +79,6 @@ namespace WebApiSCAR.Controllers
             }
 
             // Hashear la contraseña antes de guardarla en la base de datos por seguridad.
-            // BCrypt.Net.BCrypt.HashPassword genera un hash seguro de la contraseña.
             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
             _context.Users.Add(user);
@@ -87,7 +91,7 @@ namespace WebApiSCAR.Controllers
         // PUT: api/Users/5
         /// <summary>
         /// Actualiza la información de un usuario existente.
-        /// Permite cambiar el nombre de usuario o la contraseña. Si se cambia la contraseña, se hashea nuevamente.
+        /// Requiere que la contraseña sea proporcionada y se hasheará nuevamente.
         /// </summary>
         /// <param name="id">El ID del usuario a actualizar.</param>
         /// <param name="user">Objeto User con la información actualizada.</param>
@@ -100,27 +104,31 @@ namespace WebApiSCAR.Controllers
                 return BadRequest("El ID de la ruta no coincide con el ID del usuario proporcionado.");
             }
 
+            // Aquí, ModelState.IsValid se ejecutará y validará que la contraseña no esté vacía.
+            // Si ModelState.IsValid es false, se devolverá BadRequest automáticamente.
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState); // Devuelve los errores de validación, incluyendo el de Password.
+            }
+
             var existingUser = await _context.Users.FindAsync(id);
             if (existingUser == null)
             {
                 return NotFound($"Usuario con ID {id} no encontrado.");
             }
 
-            // Actualizar solo las propiedades permitidas.
-            // Si el nombre de usuario se cambia, verificar si ya existe.
-            if (existingUser.Username != user.Username && await _context.Users.AnyAsync(u => u.Username == user.Username && u.Id != id))
+            // Actualizar Username
+            if (existingUser.Username != user.Username)
             {
-                return Conflict("El nuevo nombre de usuario ya está en uso.");
+                if (await _context.Users.AnyAsync(u => u.Username == user.Username && u.Id != id))
+                {
+                    return Conflict("El nuevo nombre de usuario ya está en uso.");
+                }
+                existingUser.Username = user.Username;
             }
-            existingUser.Username = user.Username;
 
-            // Si se proporciona una nueva contraseña, hashearla.
-            // Es crucial no sobrescribir el hash si la contraseña no se envía o es vacía.
-            if (!string.IsNullOrWhiteSpace(user.Password))
-            {
-                existingUser.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-            }
-            // Si no se proporciona una nueva contraseña, la contraseña existente (hasheada) se mantiene.
+            // Actualizar Password (siempre se hashea si se envía, ya que ahora es requerido)
+            existingUser.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
             _context.Entry(existingUser).State = EntityState.Modified;
 

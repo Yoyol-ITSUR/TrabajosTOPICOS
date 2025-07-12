@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApiSCAR.Models;
 
+// Creo que esto no se maneja dentro del todo el proyecto
+// Revisalo diego
+
 #nullable disable
 
 namespace WebApiSCAR.Migrations

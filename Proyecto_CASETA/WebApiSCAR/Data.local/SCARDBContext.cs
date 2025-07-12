@@ -1,5 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 
+/*
+ * Es el contexto necesario para el entity framework.
+ * Obviamente es el puente entre los modelos y la base de datos
+*/
+
 namespace WebApiSCAR.Models
 {
     public class SCARContext : DbContext
@@ -11,6 +16,8 @@ namespace WebApiSCAR.Models
         public DbSet<Invitado> Invitados { get; set; }
         public DbSet<BitacoraRegistro> BitacorasRegistro { get; set; }
 
+
+        // Metodo posiblemente obsoleto, ya que nos peta xd
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Creates the database if not exists

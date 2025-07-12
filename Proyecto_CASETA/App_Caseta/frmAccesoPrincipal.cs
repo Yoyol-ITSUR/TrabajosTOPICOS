@@ -1,31 +1,43 @@
 using App_Caseta.Servicios;
 using System;
 using System.Drawing;
-using System.Net.Http; // Necesario para HttpRequestException
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+/*
+ * Sirve como el panel de control central para los guardias,
+ * permitiendo el escaneo de "códigos" QR para registrar entradas y salidas,
+ * y proporcionando botones para navegar a los otros formularios de gestión
+*/
+
+// Se tuvo que plantar el diseño dentro de este form
+// por que don menso la rego en algo y no supe como solucionarlo
+// intentos de diseño a "ciegas" : 39
 namespace App_Caseta
 {
     public partial class frmAccesoPrincipal : Form
     {
-        // Instancia del cliente API para comunicarse con la Web API.
         private readonly ApiClient _apiClient;
 
-        // URL base de tu Web API (¡REEMPLAZA ESTO CON TU URL DE NGROK!)
-        private const string BaseApiUrl = "TU_URL_NGROK_AQUI";
+        private readonly string BaseApiUrl = ApiClient.url;
 
         // Componentes de UI
         private TextBox txtQrToken;
         private Button btnScanQr;
-        private Label lblInfoTitle;
-        private Label lblGuestName;
-        private Label lblInvitingResident;
-        private Label lblStatusMessage;
         private Button btnResidentes;
         private Button btnInvitados;
         private Button btnHistorial;
         private Button btnUsuarios;
+
+        // Componentes para mostrar el resultado del escaneo
+        private Panel pnlScanResult;
+        private Label lblResultTitle;
+        private Label lblPersonName;
+        private Label lblPersonType;
+        private Label lblAccessType;
+        private Label lblMessage; // Para el mensaje general de la API
 
         /// <summary>
         /// Constructor del formulario principal de acceso.
@@ -33,227 +45,292 @@ namespace App_Caseta
         /// </summary>
         public frmAccesoPrincipal()
         {
-            InitializeComponent(); // Método generado por el diseñador de Forms.
+            InitializeComponent();
             _apiClient = new ApiClient(BaseApiUrl);
-            SetupFormLayout(); // Configura el diseño y los controles del formulario.
+            SetupFormLayout(); // Metodo para la construccion del diseño al momento de ejecución
+            ClearScanResultDisplay(); // Limpiar el panel de resultados al inicio
         }
 
         /// <summary>
         /// Configura el diseño y los controles visuales del formulario.
-        /// Aplica un estilo de fondo azul oscuro y organiza los elementos.
         /// </summary>
         private void SetupFormLayout()
         {
-            this.Text = "SCAR - Caseta de Vigilancia";
-            this.BackColor = ColorTranslator.FromHtml("#073B4C"); // Fondo azul oscuro
-            this.ForeColor = Color.White; // Texto blanco
-            this.Size = new Size(800, 600);
-            this.MinimumSize = new Size(800, 600); // Evitar que se haga más pequeño
-            this.MaximumSize = new Size(800, 600); // Evitar que se haga más grande
+            this.Text = "SCAR - Control de Acceso Residencial";
+            this.BackColor = ColorTranslator.FromHtml("#2f363d"); // Fondo oscuro
+            this.ForeColor = ColorTranslator.FromHtml("#f0f6fc"); // Texto claro
+            this.Size = new Size(1200, 740);
+            this.MinimumSize = new Size(1200, 740);
+            this.MaximumSize = new Size(1200, 740);
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.FormBorderStyle = FormBorderStyle.FixedSingle; // No redimensionable
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
 
-            // Título principal
-            Label lblMainTitle = new Label
+            // Título
+            Label lblTitle = new Label
             {
-                Text = "Panel de Control de Acceso",
-                Font = new Font("Segoe UI", 24, FontStyle.Bold),
+                Text = "Bienvenido a SCAR",
+                Font = new Font("Segoe UI", 30, FontStyle.Bold), // Fuente más grande
                 AutoSize = true,
-                Location = new Point(50, 30),
-                ForeColor = ColorTranslator.FromHtml("#06D6A0") // Verde vibrante
+                Location = new Point(this.Width / 2 - 200, 60), // Ajustar posición para centrar
+                ForeColor = ColorTranslator.FromHtml("#e0e0e0")
             };
-            this.Controls.Add(lblMainTitle);
+            lblTitle.Anchor = AnchorStyles.Top;
+            this.Controls.Add(lblTitle);
 
-            // Campo para escanear/ingresar QR
-            Label lblQrPrompt = new Label
-            {
-                Text = "Ingresa/Escanea Código QR:",
-                Font = new Font("Segoe UI", 12),
+            // Campo de entrada para el token QR
+            Label lblQrToken = new Label {
+                Text = "Token QR:",
+                Location = new Point(400, 180),
                 AutoSize = true,
-                Location = new Point(50, 100)
+                Font = new Font("Segoe UI", 14) 
             };
-            this.Controls.Add(lblQrPrompt);
 
+            this.Controls.Add(lblQrToken);
             txtQrToken = new TextBox
             {
-                Location = new Point(50, 130),
-                Size = new Size(300, 25),
-                Font = new Font("Segoe UI", 10),
-                PlaceholderText = "Token QR"
+                Location = new Point(520, 177),
+                Size = new Size(300, 30), // Tamaño ajustado
+                Font = new Font("Segoe UI", 12),
+                BackColor = ColorTranslator.FromHtml("#3f444a"), // Fondo de input
+                ForeColor = ColorTranslator.FromHtml("#f0f6fc"), // Texto de input
+                BorderStyle = BorderStyle.FixedSingle
             };
             this.Controls.Add(txtQrToken);
 
-            btnScanQr = new Button
-            {
-                Text = "Procesar QR",
-                Location = new Point(360, 128),
-                Size = new Size(120, 30),
-                BackColor = ColorTranslator.FromHtml("#118AB2"), // Azul
-                ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat,
-                FlatAppearance = { BorderSize = 0 },
-                Font = new Font("Segoe UI", 10, FontStyle.Bold)
-            };
+            // Botón de Escanear QR
+            // Se usan metodos para crear casi siempre el mismo diseño de boton.
+            // Similar como en kotlin
+            btnScanQr = CreateActionButton(
+                "Escanear QR",
+                new Point(520, 220), 
+                ColorTranslator.FromHtml("#238636")
+                );
+
+            // Agregamos el evento click
             btnScanQr.Click += BtnScanQr_Click;
             this.Controls.Add(btnScanQr);
 
-            // Área de visualización de información
-            lblInfoTitle = new Label
+            // Panel para mostrar el resultado del escaneo
+            pnlScanResult = new Panel
             {
-                Text = "Información del Acceso:",
-                Font = new Font("Segoe UI", 14, FontStyle.Bold),
-                AutoSize = true,
-                Location = new Point(50, 180),
-                ForeColor = ColorTranslator.FromHtml("#FFD166") // Amarillo
+                Location = new Point(100, 280), // Ajustar posición
+                Size = new Size(1000, 250), // Tamaño ajustado
+                BackColor = ColorTranslator.FromHtml("#3f444a"), // Fondo de panel (más claro que el fondo general)
+                BorderStyle = BorderStyle.FixedSingle,
+                Padding = new Padding(15),
+                Visible = false // Oculto inicialmente
             };
-            this.Controls.Add(lblInfoTitle);
+            this.Controls.Add(pnlScanResult);
 
-            lblGuestName = new Label
+            lblResultTitle = new Label
+            {
+                Text = "Resultado del Escaneo",
+                Font = new Font("Segoe UI", 18, FontStyle.Bold),
+                AutoSize = true,
+                Location = new Point(15, 15),
+                ForeColor = ColorTranslator.FromHtml("#58a6ff") // Azul de acento
+            };
+            pnlScanResult.Controls.Add(lblResultTitle);
+
+            lblPersonName = new Label
             {
                 Text = "Nombre: ",
-                Font = new Font("Segoe UI", 12),
+                Font = new Font("Segoe UI", 13),
                 AutoSize = true,
-                Location = new Point(50, 220)
+                Location = new Point(15, 65),
+                ForeColor = ColorTranslator.FromHtml("#f0f6fc") // Texto claro
             };
-            this.Controls.Add(lblGuestName);
+            pnlScanResult.Controls.Add(lblPersonName);
 
-            lblInvitingResident = new Label
+            lblPersonType = new Label
             {
-                Text = "Invitado por: ",
-                Font = new Font("Segoe UI", 12),
+                Text = "Tipo: ",
+                Font = new Font("Segoe UI", 13),
                 AutoSize = true,
-                Location = new Point(50, 250)
+                Location = new Point(15, 95),
+                ForeColor = ColorTranslator.FromHtml("#f0f6fc") // Texto claro
             };
-            this.Controls.Add(lblInvitingResident);
+            pnlScanResult.Controls.Add(lblPersonType);
 
-            // Mensajes de estado
-            lblStatusMessage = new Label
+            lblAccessType = new Label
             {
-                Text = "Esperando escaneo...",
-                Font = new Font("Segoe UI", 12, FontStyle.Italic),
+                Text = "Acceso: ",
+                Font = new Font("Segoe UI", 13),
                 AutoSize = true,
-                Location = new Point(50, 300),
-                ForeColor = Color.LightGray
+                Location = new Point(15, 125),
+                ForeColor = ColorTranslator.FromHtml("#f0f6fc") // Texto claro
             };
-            this.Controls.Add(lblStatusMessage);
+            pnlScanResult.Controls.Add(lblAccessType);
 
-            // Botones de navegación
-            int btnWidth = 150;
-            int btnHeight = 40;
-            int startX = 50;
-            int startY = 400;
-            int padding = 20;
+            lblMessage = new Label
+            {
+                Text = "Mensaje: ",
+                Font = new Font("Segoe UI", 13, FontStyle.Italic),
+                AutoSize = true,
+                Location = new Point(15, 175),
+                ForeColor = ColorTranslator.FromHtml("#f0f6fc") // Texto claro
+            };
+            pnlScanResult.Controls.Add(lblMessage);
 
-            btnResidentes = CreateNavButton("Gestión Residentes", new Point(startX, startY));
+
+            // Botones de Navegación a otros formularios
+            // son los "coordenadas" clave para poder diseñar a ciegas :C
+            int btnNavX = 50;
+            int btnNavY = 580; // Ajustar la posición Y para dejar espacio al panel
+            int btnNavSpacing = 280; // Mayor espaciado
+
+            // -- Boton de residente
+            btnResidentes = CreateActionButton(
+                "Gestión Residentes",
+                new Point(btnNavX, btnNavY),
+                ColorTranslator.FromHtml("#444c56")
+                );
+
+            // Se usa una función lambda directa que llama a un "metodo" sin tener
+            // que crear la estrutura para un evento y simplemente anidar un metodo
+            // para simplificar la misma función, solo cambia el formulario a abrir.
             btnResidentes.Click += (s, e) => OpenForm(new frmResidentes());
             this.Controls.Add(btnResidentes);
 
-            btnInvitados = CreateNavButton("Gestión Invitados", new Point(startX + btnWidth + padding, startY));
+
+            // -- Boton de Invitados
+            btnInvitados = CreateActionButton(
+                "Gestión Invitados",
+                new Point(btnNavX + btnNavSpacing, btnNavY),
+                ColorTranslator.FromHtml("#444c56")
+                ); // Botón secundario
             btnInvitados.Click += (s, e) => OpenForm(new frmInvitados());
             this.Controls.Add(btnInvitados);
 
-            btnHistorial = CreateNavButton("Historial Accesos", new Point(startX + (btnWidth + padding) * 2, startY));
+            // -- Boton de Historial
+            btnHistorial = CreateActionButton(
+                "Historial de Accesos",
+                new Point(btnNavX + btnNavSpacing * 2, btnNavY),
+                ColorTranslator.FromHtml("#444c56")
+                );
             btnHistorial.Click += (s, e) => OpenForm(new frmHistorial());
             this.Controls.Add(btnHistorial);
 
-            btnUsuarios = CreateNavButton("Gestión Usuarios", new Point(startX + (btnWidth + padding) * 3, startY));
+            // -- Boton de Usuarios
+            btnUsuarios = CreateActionButton(
+                "Gestión Usuarios",
+                new Point(btnNavX + btnNavSpacing * 3, btnNavY),
+                ColorTranslator.FromHtml("#444c56")
+                );
             btnUsuarios.Click += (s, e) => OpenForm(new frmUsuarios());
             this.Controls.Add(btnUsuarios);
         }
 
         /// <summary>
-        /// Crea un botón de navegación con estilo predefinido.
+        /// Crea un botón de acción con estilo.
         /// </summary>
-        /// <param name="text">Texto del botón.</param>
-        /// <param name="location">Ubicación del botón.</param>
-        /// <returns>Un objeto Button configurado.</returns>
-        private Button CreateNavButton(string text, Point location)
+        private Button CreateActionButton(string text, Point location, Color backColor)
         {
             return new Button
             {
                 Text = text,
                 Location = location,
-                Size = new Size(150, 40),
-                BackColor = ColorTranslator.FromHtml("#FF6B6B"), // Rojo vibrante
+                Size = new Size(250, 45),
+                BackColor = backColor,
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
                 FlatAppearance = { BorderSize = 0 },
-                Font = new Font("Segoe UI", 10, FontStyle.Bold)
+                Font = new Font("Segoe UI", 11, FontStyle.Bold)
             };
         }
 
         /// <summary>
-        /// Abre un nuevo formulario y lo muestra, ocultando el formulario principal.
+        /// Limpia y oculta el panel de resultados del escaneo.
         /// </summary>
-        /// <param name="formToOpen">El formulario a abrir.</param>
-        private void OpenForm(Form formToOpen)
+        private void ClearScanResultDisplay()
         {
-            this.Hide(); // Oculta el formulario principal
-            formToOpen.FormClosed += (s, args) => this.Show(); // Muestra el principal cuando el nuevo se cierra
-            formToOpen.Show();
+            lblResultTitle.Text = "Resultado del Escaneo";
+            lblResultTitle.ForeColor = ColorTranslator.FromHtml("#58a6ff"); // Resetear color
+            lblPersonName.Text = "Nombre: ";
+            lblPersonType.Text = "Tipo: ";
+            lblAccessType.Text = "Acceso: ";
+            lblMessage.Text = "Mensaje: ";
+            pnlScanResult.Visible = false;
+            pnlScanResult.BackColor = ColorTranslator.FromHtml("#3f444a"); // Resetear color de fondo
         }
 
         /// <summary>
-        /// Manejador del evento Click del botón "Procesar QR".
-        /// Envía el token QR a la API para registrar la entrada/salida.
+        /// Muestra los resultados del escaneo en el panel.
+        /// </summary>
+        private void DisplayScanResult(ScanResponseDto response)
+        {
+            pnlScanResult.Visible = true;
+            lblResultTitle.Text = response.IsSuccess ? "¡Acceso Exitoso!" : "Acceso Denegado";
+            lblResultTitle.ForeColor = response.IsSuccess ? ColorTranslator.FromHtml("#58a6ff") : ColorTranslator.FromHtml("#da3633"); // Azul para éxito, rojo para error
+            pnlScanResult.BackColor = response.IsSuccess ? ColorTranslator.FromHtml("#3f444a") : ColorTranslator.FromHtml("#444c56"); // Fondo de panel
+
+            lblPersonName.Text = $"Nombre: {response.PersonName}";
+            lblPersonType.Text = $"Tipo: {response.PersonType}";
+            lblAccessType.Text = $"Acceso: {response.AccessType}";
+            lblMessage.Text = $"Mensaje: {response.Message}";
+        }
+
+        /// <summary>
+        /// Manejador del evento Click del botón "Escanear QR".
+        /// Envía el token QR a la API para validar el acceso.
         /// </summary>
         private async void BtnScanQr_Click(object sender, EventArgs e)
         {
+            ClearScanResultDisplay(); // Limpiar resultados anteriores
+
             string qrToken = txtQrToken.Text.Trim();
             if (string.IsNullOrEmpty(qrToken))
             {
-                UpdateStatus("Por favor, ingresa un token QR.", Color.OrangeRed);
+                MessageBox.Show("Por favor, ingresa un token QR.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            btnScanQr.Enabled = false; // Deshabilitar botón durante la operación
-            UpdateStatus("Procesando QR...", Color.LightBlue);
+            int guardiaId = 1; // Asumiendo un GuardiaId fijo para la prueba
 
             try
             {
-                var scanRequest = new ScanRequestDto { QrToken = qrToken, GuardiaId = 1 }; // GuardiaId es opcional, usar 1 como ejemplo
-                // La API devuelve un string de mensaje, por eso se usa string como tipo de retorno.
-                var responseMessage = await _apiClient.PostAsync<string>("BitacoraRegistro/Scan", scanRequest);
+                var scanRequest = new ScanRequestDto { QrToken = qrToken, GuardiaId = guardiaId };
+                var responseDto = await _apiClient.PostAsync<ScanResponseDto>("BitacoraRegistro/Scan", scanRequest);
 
-                UpdateStatus(responseMessage, Color.LightGreen); // Mensaje de éxito de la API
+                DisplayScanResult(responseDto); // Mostrar los resultados en el panel
 
-                // Opcional: Si la API devolviera un objeto con el invitado/residente,
-                // se podría parsear y mostrar aquí. Para este ejemplo, solo mostramos el mensaje.
-                lblGuestName.Text = "Nombre: (Ver mensaje de estado)";
-                lblInvitingResident.Text = "Invitado por: (Ver mensaje de estado)";
+                txtQrToken.Clear(); // Limpiar el campo después del escaneo
             }
             catch (HttpRequestException httpEx)
             {
-                // Capturar errores HTTP específicos (ej. 404 Not Found, 400 Bad Request)
                 string errorMessage = $"Error de API: {httpEx.Message}";
                 if (httpEx.StatusCode.HasValue)
                 {
                     errorMessage = $"Error HTTP {httpEx.StatusCode.Value}: {httpEx.Message}";
                 }
-                UpdateStatus(errorMessage, Color.Red);
+                MessageBox.Show(errorMessage, "Error de Conexión/API", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Si hay un error HTTP, podemos mostrar un mensaje de error genérico en el panel
+                DisplayScanResult(new ScanResponseDto { Message = "Error de conexión o API. Consulta los detalles.", IsSuccess = false });
+            }
+            catch (JsonException jsonEx)
+            {
+                MessageBox.Show($"Error de formato de respuesta del servidor: {jsonEx.Message}\n" +
+                                "La API no devolvió una respuesta JSON válida. Por favor, verifica el log de la API para más detalles.",
+                                "Error de Datos del Servidor", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DisplayScanResult(new ScanResponseDto { Message = "Error de datos del servidor. Formato JSON inválido.", IsSuccess = false });
             }
             catch (Exception ex)
             {
-                // Capturar otros errores inesperados
-                UpdateStatus($"Error inesperado: {ex.Message}", Color.Red);
-            }
-            finally
-            {
-                btnScanQr.Enabled = true; // Habilitar botón de nuevo
-                txtQrToken.Clear(); // Limpiar el campo del token
+                MessageBox.Show($"Error inesperado al escanear QR: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DisplayScanResult(new ScanResponseDto { Message = "Error inesperado. Consulta el log de la aplicación.", IsSuccess = false });
             }
         }
 
         /// <summary>
-        /// Actualiza el mensaje de estado en la interfaz de usuario con un color específico.
+        /// Abre un nuevo formulario, ocultando el formulario actual y volviéndolo a mostrar al cerrar el nuevo.
         /// </summary>
-        /// <param name="message">El mensaje a mostrar.</param>
-        /// <param name="color">El color del texto del mensaje.</param>
-        private void UpdateStatus(string message, Color color)
+        /// <param name="formToOpen">La instancia del formulario a abrir.</param>
+        private void OpenForm(Form formToOpen)
         {
-            lblStatusMessage.Text = message;
-            lblStatusMessage.ForeColor = color;
+            this.Hide(); // Oculta el formulario principal
+            formToOpen.ShowDialog(); // Muestra el nuevo formulario de forma modal (bloquea el principal)
+            this.Show(); // Vuelve a mostrar el formulario principal cuando el nuevo se cierra
         }
     }
 }

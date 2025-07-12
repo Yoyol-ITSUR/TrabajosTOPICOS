@@ -2,6 +2,9 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using MySql.EntityFrameworkCore.Metadata;
 
+// Creo que esto no se maneja dentro del todo el proyecto
+// Revisalo diego
+
 #nullable disable
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
