@@ -24,7 +24,9 @@ namespace App_Caseta.Servicios
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseAddress;
-        public static readonly string url = "https://localhost:7199";
+
+        // URL default
+        public static string url = "https://localhost:7199";
 
         /// <summary>
         /// Constructor del ApiClient.

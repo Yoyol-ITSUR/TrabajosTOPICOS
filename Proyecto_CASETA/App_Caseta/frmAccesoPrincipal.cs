@@ -72,7 +72,7 @@ namespace App_Caseta
                 Text = "Bienvenido a SCAR",
                 Font = new Font("Segoe UI", 30, FontStyle.Bold), // Fuente más grande
                 AutoSize = true,
-                Location = new Point(this.Width / 2 - 200, 60), // Ajustar posición para centrar
+                Location = new Point(this.Width / 2 - 250, 60), // Ajustar posición para centrar
                 ForeColor = ColorTranslator.FromHtml("#e0e0e0")
             };
             lblTitle.Anchor = AnchorStyles.Top;
@@ -81,7 +81,7 @@ namespace App_Caseta
             // Campo de entrada para el token QR
             Label lblQrToken = new Label {
                 Text = "Token QR:",
-                Location = new Point(400, 180),
+                Location = new Point(this.Width / 2 - 250, 180),
                 AutoSize = true,
                 Font = new Font("Segoe UI", 14) 
             };
